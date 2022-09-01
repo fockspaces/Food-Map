@@ -3,6 +3,7 @@ const router = express.Router();
 const catchAsnyc = require("../utils/catchAsync");
 const User = require("../models/user");
 const passport = require("passport");
+const { preUrl } = require("../middleware");
 
 router.get("/register", (req, res) => {
   res.render("users/register");
