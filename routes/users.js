@@ -6,21 +6,22 @@ const User = require("../models/user");
 const passport = require("passport");
 const { preUrl } = require("../middleware");
 
-router.get("/register", users.renderRegister);
+router
+  .route("/register")
+  .get(users.renderRegister)
+  .post(catchAsnyc(users.register));
 
-router.post("/register", catchAsnyc(users.register));
-
-router.get("/login", users.renderLogin);
-
-router.post(
-  "/login",
-  passport.authenticate("local", {
-    failureFlash: true,
-    failureRedirect: "/login",
-    keepSessionInfo: true,
-  }),
-  users.login
-);
+router
+  .route("/login")
+  .get(users.renderLogin)
+  .post(
+    passport.authenticate("local", {
+      failureFlash: true,
+      failureRedirect: "/login",
+      keepSessionInfo: true,
+    }),
+    users.login
+  );
 
 router.get("/logout", users.logout);
 
