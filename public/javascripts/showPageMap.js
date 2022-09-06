@@ -4,7 +4,7 @@ const map = new mapboxgl.Map({
   // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
   style: "mapbox://styles/mapbox/streets-v11", // style URL
   center: campground.geometry.coordinates, // starting position [lng, lat]
-  zoom: 6, // starting zoom
+  zoom: 14, // starting zoom
   projection: "globe", // display the map as a 3D globe
 });
 
