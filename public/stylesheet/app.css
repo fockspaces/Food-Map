@@ -17,3 +17,13 @@
   height: 300px;
   width: 100%;
 }
+
+@media (max-width: 780px) {
+  #flex_show {
+    flex-direction: column;
+  }
+
+  .col-6 {
+    width: 100%;
+  }
+}
