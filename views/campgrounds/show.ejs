@@ -54,7 +54,7 @@
         </form>
       </div>
       <% } %>
-      <div class="card-footer text-muted">2 days ago</div>
+      <div class="card-footer text-muted"><%= days ? days : 2%> days ago</div>
     </div>
   </div>
   <div class="col-6">
@@ -99,11 +99,13 @@
     <div class="card mb-3">
       <div class="card-body">
         <h4 class="card-title"><%= review.author.username %></h4>
+        <p class="card-text text-muted"><%= review.date.mm ? `${review.date.mm}/${review.date.dd}/${review.date.yy}` : '' %></p>
+
         <p class="starability-result" data-rating=<%= review.rating %>>
           Rated: <%= review.rating %> stars
         </p>
         <p class="card-text"><%= review.body %></p>
-
+        
         <% if(currentUser && review.author.equals(currentUser._id)) { %>
         <form
           action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE"

@@ -8,6 +8,7 @@ const reviewSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  date: { yy: String, mm: String, dd: String },
 });
 
 module.exports = mongoose.model("Review", reviewSchema);

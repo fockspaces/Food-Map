@@ -32,9 +32,9 @@ module.exports.createCampground = async (req, res, next) => {
     filename: file.filename,
   }));
   campground.author = req.user._id;
-  console.log(campground.geometry);
+  campground.dateCreated = Date.now();
   await campground.save();
-  req.flash("success", "Successfully made a new campground");
+  req.flash("success", "Successfully made a new post");
   res.redirect(`/campgrounds/${campground._id}`);
 };
 
@@ -48,17 +48,23 @@ module.exports.showCampground = async (req, res) => {
     })
     .populate("author");
   if (!campground) {
-    req.flash("error", "Cannot find that campground");
+    req.flash("error", "Cannot find that post");
     return res.redirect("/campgrounds");
   }
-  res.render("campgrounds/show", { campground });
+  const date = campground.dateCreated;
+  const now = Date.now();
+  const days = parseInt(
+    (date - now) / (1000 * 60 * 60 * 24),
+    10
+  );
+  res.render("campgrounds/show", { campground, days});
 };
 
 module.exports.renderEditForm = async (req, res) => {
   const { id } = req.params;
   const campground = await Campground.findById(id);
   if (!campground) {
-    req.flash("error", "Cannot find that campground");
+    req.flash("error", "Cannot find that post");
     return res.redirect("/campgrounds");
   }
   res.render("campgrounds/edit", { campground });
@@ -85,13 +91,13 @@ module.exports.updateCampground = async (req, res) => {
     });
     console.log(campground);
   }
-  req.flash("success", "Successfully updated campground!");
+  req.flash("success", "Successfully updated post!");
   res.redirect(`/campgrounds/${campground._id}`);
 };
 
 module.exports.deleteCampground = async (req, res) => {
   const { id } = req.params;
   await Campground.findByIdAndDelete(id);
-  req.flash("success", "Successfully deleted campground!");
+  req.flash("success", "Successfully deleted post!");
   res.redirect("/campgrounds");
 };
