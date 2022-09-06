@@ -15,7 +15,6 @@ const methodOverride = require("method-override");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
-const helmet = require("helmet");
 
 const Campground = require("./models/campground");
 const Review = require("./models/review");
@@ -25,8 +24,12 @@ const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
 
 const mongoSanitize = require("express-mongo-sanitize");
+const dbURL = process.env.DB_URL;
+const url = dbURL || "mongodb://localhost:27017/yelp-camp";
 
-mongoose.connect("mongodb://localhost:27017/yelp-camp", {
+const MongoStore = require("connect-mongo");
+
+mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -46,9 +49,17 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize({ replaceWith: "_" }));
 
+const secret = process.env.SECRET || "thisshouldbeabettersecret";
+
+const store = new MongoStore({
+  mongoUrl: url,
+  touchAfter: 24 * 60 * 60,
+  secret
+});
+
 const sessionConfig = {
   name: "session",
-  secret: "thisshouldbeabettersecret!",
+  secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -57,14 +68,10 @@ const sessionConfig = {
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
+  store,
 };
 app.use(session(sessionConfig));
 app.use(flash());
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  })
-);
 
 app.use(passport.initialize());
 app.use(passport.session());
