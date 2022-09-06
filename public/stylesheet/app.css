@@ -11,3 +11,9 @@
 #showImg {
   object-fit: cover;
 }
+
+.index_img {
+  object-fit: cover;
+  height: 300px;
+  width: 100%;
+}
