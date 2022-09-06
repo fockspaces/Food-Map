@@ -9,6 +9,11 @@ module.exports.index = async (req, res) => {
   res.render("campgrounds/index", { campgrounds });
 };
 
+module.exports.map = async (req, res) => {
+  const campgrounds = await Campground.find({});
+  res.render("campgrounds/map", { campgrounds });
+};
+
 module.exports.renderNewForm = (req, res) => {
   res.render("campgrounds/new");
 };
