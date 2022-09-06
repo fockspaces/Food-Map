@@ -14,7 +14,7 @@ map.addControl(new mapboxgl.NavigationControl());
 // Create a default Marker and add it to the map.
 const marker1 = new mapboxgl.Marker()
   .setPopup(
-    new mapboxgl.Popup({ offset: 25, className: "my-class" }).setHTML(
+    new mapboxgl.Popup({ offset: 25, className: "my-class", closeButton: false }).setHTML(
       `<h6>${campground.title}</h6><p>${campground.location}</p>`
     )
   )
